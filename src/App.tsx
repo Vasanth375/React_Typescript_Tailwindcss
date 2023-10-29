@@ -9,7 +9,11 @@ function App() {
     { id: 1, name: "Vasanth" },
     { id: 2, name: "Lenovo" },
     { id: 3, name: "Dell" },
+<<<<<<< HEAD
     { id: 4, name: "SpaceX" },
+=======
+    { id: 4, name: "HP" },
+>>>>>>> 7b0591c (Updated react)
   ];
   const [formVis, setVis] = useState(true);
   return (
