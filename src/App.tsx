@@ -9,7 +9,7 @@ function App() {
     { id: 1, name: "Vasanth" },
     { id: 2, name: "Lenovo" },
     { id: 3, name: "Dell" },
-    { id: 4, name: "HP" },
+    { id: 4, name: "SpaceX" },
   ];
   const [formVis, setVis] = useState(true);
   return (
