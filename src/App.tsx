@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import AppContainer from "./components/AppContainer";
 import Form from "./components/Form";
+import Home from "./components/Home";
 
 function App() {
   const data = [
@@ -13,41 +14,23 @@ function App() {
     { id: 5, name: "HP" },
   ];
   const [formVis, setVis] = useState(true);
+
   return (
     <AppContainer>
-      <div className="w-3/5 p-4 mx-auto bg-white shadow-lg rounded-2xl">
+      <div className="p-4 mx-auto bg-white shadow-lg rounded-2xl">
         <div className="flex justify-evenly">
           <img
             src={logo}
             alt="logo"
-            className="animate-spin duration-300 w-15 h-14"
+            className="animate-spin duration-300 w-14 h-14"
           ></img>
-          <h1 className="py-2.5 flex-1 text-center text-lg shrink-0 ">
-            Welcome to #react-typescript with #tailwindcss{" "}
+          <h1 className="py-3.5 flex-1 text-center text-base shrink-0 ">
+            Typeform using #react-typescript with #tailwindcss{" "}
           </h1>
         </div>
+
         {formVis ? (
-          <>
-            <div className="">
-              {data.map((val) => (
-                <p
-                  className="bg-slate-500 text-center text-xl l-h"
-                  id={val.id.toString()}
-                >
-                  {val.name}
-                </p>
-              ))}
-            </div>
-            <button
-              className="bg-blue-600 text-white ml-3 rounded-lg p-1 mt-2"
-              onClick={() => {
-                //   props.formVis = !props.formVis;
-                setVis(!formVis);
-              }}
-            >
-              Open Form
-            </button>
-          </>
+          <Home data={data} setvis={setVis} formVis></Home>
         ) : (
           <Form formVis={formVis} setvis={setVis}></Form>
         )}
