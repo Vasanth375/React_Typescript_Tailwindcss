@@ -12,7 +12,7 @@ function Home(props: {
         <img
           src={logo}
           alt="logo"
-          className="hover:animate-spin duration-1000 w-52 h-32"
+          className="hover:animate-spin  duration-1000 w-52 h-32"
         ></img>
         <h1 className="py-12">Welcome to Home Page</h1>
       </div>
