@@ -14,10 +14,10 @@ function App() {
     { id: 5, name: "HP" },
   ];
   const [formVis, setVis] = useState(true);
-
+  // p-4 mx-auto bg-white shadow-lg rounded-2xl
   return (
     <AppContainer>
-      <div className="p-4 mx-auto bg-white shadow-lg rounded-2xl">
+      <div className="p-4 mx-auto bg-slate-300 shadow-lg rounded-2xl bg-opacity-5 text-cyan-100">
         <div className="flex justify-evenly">
           <img
             src={logo}

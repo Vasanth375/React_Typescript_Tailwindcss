@@ -1,34 +1,57 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+interface formField {
+  id: number;
+  label: string;
+  fieldType: string;
+  value: string;
+}
 
 function Form(props: {
   formVis: boolean;
   setvis: (value: boolean | ((prevVar: boolean) => boolean)) => void;
 }) {
-  const labelText = [
+  const labelText: formField[] = [
     {
       id: 1,
       label: "firstName",
-      type: "text",
+      fieldType: "text",
+      value: "",
     },
     {
       id: 2,
       label: "lastName",
-      type: "text",
+      fieldType: "text",
+      value: "",
     },
     {
       id: 3,
       label: "Email",
-      type: "mail",
+      fieldType: "mail",
+      value: "",
     },
     {
       id: 4,
       label: "date of birth",
-      type: "date",
+      fieldType: "date",
+      value: "",
     },
   ];
-  const [printLabel, setLabel] = useState(labelText);
+
+  const initialValues: () => formField[] = () => {
+    const localstoragevalues = localStorage.getItem("formField");
+    const finalValues = localstoragevalues
+      ? JSON.parse(localstoragevalues)
+      : labelText;
+    return finalValues;
+  };
+
+  const [printLabel, setLabel] = useState(initialValues());
   const [textField, setField] = useState("");
   // const [removeField, setremove] = useState("");
+  const formFieldJSON = (state: formField[]) => {
+    localStorage.setItem("formField", JSON.stringify(state));
+  };
   const updateLabel = () => {
     console.log("add Field", printLabel.length);
     if (textField !== "") {
@@ -37,7 +60,8 @@ function Form(props: {
         {
           id: Number(new Date()),
           label: textField,
-          type: "text",
+          fieldType: "text",
+          value: "",
         },
       ]);
       setField("");
@@ -45,9 +69,38 @@ function Form(props: {
     console.log("After add Field", printLabel.length);
   };
 
+  const setValues = (data: formField, value: string) => {
+    const updatedLabel = printLabel.map((field) =>
+      field.id === data.id ? { ...field, value: value } : field
+    );
+    console.log(updatedLabel);
+    setLabel(updatedLabel);
+  };
   const removeLabel = (id: number) => {
     setLabel(printLabel.filter((field) => field.id !== id));
   };
+
+  useEffect(() => {
+    console.log("Form Component is Mounting");
+
+    // currently we are in Form Component is Mounting then title will be this
+    document.title = "React Form";
+    return () => {
+      // when leaving(Unmounted) the component it title will be changed
+      document.title = "React App";
+    };
+  }, []);
+
+  // here this useeffect callback function trigggered when ever any changes made to the printLabel object
+  useEffect(() => {
+    // here this timout function calls for every single second and calls this function to store data
+    let timout = setTimeout(() => {
+      formFieldJSON(printLabel);
+    }, 1000);
+    return () => {
+      clearTimeout(timout);
+    };
+  }, [printLabel]);
   return (
     <>
       <form action="#">
@@ -61,9 +114,11 @@ function Form(props: {
 
                 <div className="flex justify-between">
                   <input
-                    type={data.type}
+                    type={data.fieldType}
                     required
+                    value={data.value}
                     className="bg-transparent rounded-lg shadow-lg border-2 p-2 h-12 w-80 outline-slate-200"
+                    onChange={(e) => setValues(data, e.target.value)}
                   ></input>
                   <button
                     type="button"
@@ -83,7 +138,6 @@ function Form(props: {
           <input
             type="text"
             onChange={(e) => setField(e.target.value)}
-            required
             placeholder="Enter Text Field"
             className="bg-transparent rounded-lg shadow-lg border-2 p-2 h-12 w-80 outline-slate-200"
           ></input>
@@ -95,22 +149,34 @@ function Form(props: {
             Add Field
           </button>
         </div>
-
-        <button
-          type="submit"
-          className="bg-blue-600 text-white rounded-lg p-1 mt-2"
-        >
-          Submit
-        </button>
-        <button
-          className="bg-blue-600 text-white ml-3 rounded-lg p-1 mt-2"
-          onClick={(e) => {
-            props.setvis(!props.formVis);
-          }}
-        >
-          Close Form
-        </button>
       </form>
+
+      <button
+        type="submit"
+        className="bg-blue-600 text-white rounded-lg p-1 mt-2"
+        onClick={() => {
+          setLabel([...printLabel]);
+          formFieldJSON(printLabel);
+        }}
+      >
+        Save
+      </button>
+      <button
+        className="bg-blue-600 text-white ml-3 rounded-lg p-1 mt-2"
+        onClick={(e) => {
+          props.setvis(!props.formVis);
+        }}
+      >
+        Close Form
+      </button>
+      <button
+        className="bg-blue-600 text-white ml-3 rounded-lg p-1 mt-2"
+        onClick={(e) => {
+          localStorage.removeItem("formField");
+        }}
+      >
+        Clear Memory
+      </button>
     </>
   );
 }
