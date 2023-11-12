@@ -97,6 +97,7 @@ function Form(props: {
     let timout = setTimeout(() => {
       formFieldJSON(printLabel);
     }, 1000);
+    console.log("Timeout Effect");
     return () => {
       clearTimeout(timout);
     };
