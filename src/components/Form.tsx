@@ -66,7 +66,7 @@ function Form(props: {
       ]);
       setField("");
     }
-    console.log("After add Field", printLabel.length);
+    console.log("After Field Added", printLabel.length);
   };
 
   const setValues = (data: formField, value: string) => {
